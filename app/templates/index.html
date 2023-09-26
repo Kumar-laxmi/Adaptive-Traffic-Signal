@@ -96,7 +96,8 @@
                         Image Upload
                     </div>
                     <div class="card-body">
-                        <form action="#" method="POST" enctype="multipart/form-data" id="imageUploadForm">{% csrf_token %}
+                        <form action="" method="POST" enctype="multipart/form-data" id="imageUploadForm">{% csrf_token %}
+                            {{form.as_p}}
                             <div class="form-group">
                                 <label for="image">Select an Image:</label>
                                 <input type="file" class="form-control-file" id="image" name="image" accept="image/*" required>
@@ -106,9 +107,13 @@
                                 <img src="" alt="Uploaded Image" id="previewImage" style="max-width: 100%;">
                             </div>
                             <div class="form-group">
-                                <button type="submit" class="btn btn-primary">Upload</button>
+                                <button type="submit">Upload</button>
                             </div>
                         </form>
+                        {% if img_obj %}  
+                            <h3>Succesfully uploaded : {{img_obj.caption}}</h3>  
+                            <img src="{{ img_obj.image.url}}" alt="connect" style="max-height:300px">  
+                        {% endif %} 
                     </div>
                 </div>
             </div>

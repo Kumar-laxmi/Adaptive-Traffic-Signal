@@ -1,6 +1,9 @@
 # Libraries related to Django
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.http import HttpResponse
+from app.forms import UserImageForm  
+from .models import UploadImage  
+
 
 # Libraries related to Image Processing
 from PIL import Image
@@ -28,7 +31,7 @@ def get_class_label_from_index(class_index):
 def index(request):
     return render(request, 'index.html', {})
 
-def detect_objects(request):
+def result(request):
     if request.method == 'POST':
         # Assuming your file input field is named 'image'
         uploaded_image = request.FILES['image']
@@ -64,17 +67,22 @@ def detect_objects(request):
             cv2.rectangle(image_np, (int(xmin), int(ymin)), (int(xmax), int(ymax)), class_color, 2)
             cv2.putText(image_np, f'{class_label} {confidence_score:.2f}', (int(xmin), int(ymin) - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.5, class_color, 1)
 
-    # Convert the PIL Image to bytes
-    image_bytes = io.BytesIO()
-    image_np.save(image_bytes, format="PNG")
-    image_data = base64.b64encode(image_bytes.getvalue()).decode()
+        # Convert the NumPy array to an image
+        image = Image.fromarray(image_np)
 
-    # Pass the image data to the template context
-    context = {
-        'image_data': f"data:image/png;base64,{image_data}"
-    }
-    
-    return render(request, 'result.html', context)
+        # Convert the PIL Image to bytes
+        image_bytes = io.BytesIO()
+        image.save(image_bytes, format="PNG")
+        image_data = base64.b64encode(image_bytes.getvalue()).decode()
+
+        # Pass the image data to the template context
+        context = {
+            'image_data': f"data:image/png;base64,{image_data}"
+        }
+        
+        return render(request, 'result.html', context)
+    else:
+        return render(request, 'index.html', {})
 
 def index_temp(request):
     return render(request, 'index_temp.html', {})
