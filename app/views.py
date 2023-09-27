@@ -48,23 +48,68 @@ def index(request):
                     3: (255, 255, 0)
                     # Add more class indices and colors as needed
                 }
+        
+        # Define the Coordinates of the Region Of Interest
+        quads = [
+            np.array([(588, 551), (819, 725), (527, 1079), (47, 1079)], np.int32),
+            np.array([(1307, 509), (1494, 341), (1916, 536), (1916, 819)], np.int32),
+            np.array([(1057, 122), (1222, 194), (1718, 137), (1598, 49)], np.int32),
+            np.array([(410, 374), (716, 216), (243, 2), (4, 148)], np.int32)
+        ]
+
+        # ROI color (Green)
+        roi_color = (0, 255, 0)
+
+        # Create a list to store the vehicle counts for each lane
+        vehicle_counts = [0] * len(quads)
+
         # Loading the custom model
         model = YOLO('app/model/best.pt')
         detections = model(image)
 
-        # Access detection results and display on image
+         # Iterate through each detection
+        for box in detections[0].boxes:
+            class_index = int(box.cls.item())
+            if class_index in [0, 1, 2, 3]:  # Vehicle class indices
+                bounding_box = box.xyxy.tolist()[0]
+
+                # Check if the center of the bounding box is inside any of the quads
+                bbox_center = ((bounding_box[0] + bounding_box[2]) / 2, (bounding_box[1] + bounding_box[3]) / 2)
+                for i, quad in enumerate(quads):
+                    if cv2.pointPolygonTest(quad, bbox_center, False) == 1:
+                        vehicle_counts[i] += 1
+
+        # Draw regions of interest and lane names
+        for i, quad in enumerate(quads):
+            lane_name = f'lane{i + 1}'
+            lane_color = roi_color
+
+            # Draw region of interest
+            cv2.polylines(image_np, [quad], isClosed=True, color=lane_color, thickness=2)
+
+            # Draw lane name
+            cv2.putText(image_np, lane_name, (quad[0][0], quad[0][1] - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.7, lane_color, 2)
+
+        # Draw bounding boxes on vehicles
         for box in detections[0].boxes:
             class_index = int(box.cls.item())
             bounding_box = box.xyxy.tolist()[0]
             confidence_score = box.conf.item()
 
-            class_label = get_class_label_from_index(class_index)
             class_color = class_colors.get(class_index, (0, 0, 0))  # Default color if not found
 
-            # Draw bounding box and label on the image_np
             xmin, ymin, xmax, ymax = bounding_box
             cv2.rectangle(image_np, (int(xmin), int(ymin)), (int(xmax), int(ymax)), class_color, 2)
-            cv2.putText(image_np, f'{class_label} {confidence_score:.2f}', (int(xmin), int(ymin) - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.5, class_color, 1)
+            cv2.putText(image_np, f'{confidence_score:.2f}', (int(xmin), int(ymin) - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.5, class_color, 1)
+
+        # Draw vehicle count box at the bottom of the image
+        vehicle_count_text = 'Vehicle Count:'
+        for i, count in enumerate(vehicle_counts):
+            vehicle_count_text += f'    Lane {i + 1}: {count} vehicles'
+
+        bottom_box_height = 120
+        cv2.rectangle(image_np, (0, image_np.shape[0] - bottom_box_height), (image_np.shape[1], image_np.shape[0]), (0, 0, 0), -1)
+        cv2.putText(image_np, vehicle_count_text, (10, image_np.shape[0] - bottom_box_height + 40), cv2.FONT_HERSHEY_SIMPLEX, 0.7, (255, 255, 255), 2)
 
         # Convert the NumPy array to an image
         image = Image.fromarray(image_np)
