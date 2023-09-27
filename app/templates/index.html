@@ -90,28 +90,44 @@
   <!-- Additional Code can be placed over here -->
     <div class="container mt-5">
         <div class="row justify-content-center">
-            <div class="col-md-6">
-                <div class="card">
-                    <div class="card-header">
-                        Image Upload
-                    </div>
-                    <div class="card-body">
-                        <form method="post" enctype="multipart/form-data">
-                          {% csrf_token %}
-                          {{ form.as_p }}
-                          <button type="submit">Upload</button>
-                        </form>
-                        <h3>Uploaded Images:</h3>
-                        {% if image.image %}
-                        <ul>
-                            <li><img src="{{ image.image.url }}" alt="Uploaded Image" style="max-width: 100%; max-height: 300px;"></li>
-                        </ul>
-                        {% else %}
-                            <p>No image uploaded for this object.</p>
-                        {% endif %}
+            <div class="row">
+                <div class="col-md-6 mx-auto">
+                    <div class="card">
+                        <div class="card-header">
+                            Image Upload
+                        </div>
+                        <div class="card-body">
+                            <form method="post" enctype="multipart/form-data">
+                              {% csrf_token %}
+                              {{ form.as_p }}
+                              <button type="submit">Upload</button>
+                            </form>
+                            <h3>Uploaded Images:</h3>
+                        </div>
                     </div>
                 </div>
             </div>
+            {% if image.image %}
+            <div class="row g-2">
+                <div class="col-md-6 mx-auto"></div>
+                    <div class="card" style="width: 100%;">
+                        <img class="card-img-top" src="{{ image.image.url }}" alt="Uploaded Image" style="max-width: 100%;">
+                        <div class="card-body">
+                            <p class="card-text">
+                                <ul>
+                                    <li><b>Lane 1: </b>{{ lane1 }}</li>
+                                    <li><b>Lane 2: </b>{{ lane2 }}</li>
+                                    <li><b>Lane 3: </b>{{ lane3 }}</li>
+                                    <li><b>Lane 4: </b>{{ lane4 }}</li>
+                                </ul>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% else %}
+                <!-- To be left blank to print Nothing -->
+            {% endif %}
         </div>
     </div>
 

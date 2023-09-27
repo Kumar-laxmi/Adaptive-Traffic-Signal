@@ -102,14 +102,19 @@ def index(request):
             cv2.rectangle(image_np, (int(xmin), int(ymin)), (int(xmax), int(ymax)), class_color, 2)
             cv2.putText(image_np, f'{confidence_score:.2f}', (int(xmin), int(ymin) - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.5, class_color, 1)
 
-        # Draw vehicle count box at the bottom of the image
-        vehicle_count_text = 'Vehicle Count:'
+        # Store Vehicle Count in the variables
+        lane1 = lane2 = lane3 = lane4 = 0
         for i, count in enumerate(vehicle_counts):
-            vehicle_count_text += f'    Lane {i + 1}: {count} vehicles'
-
-        bottom_box_height = 120
-        cv2.rectangle(image_np, (0, image_np.shape[0] - bottom_box_height), (image_np.shape[1], image_np.shape[0]), (0, 0, 0), -1)
-        cv2.putText(image_np, vehicle_count_text, (10, image_np.shape[0] - bottom_box_height + 40), cv2.FONT_HERSHEY_SIMPLEX, 0.7, (255, 255, 255), 2)
+            if i == 0:
+                lane1 = count
+            elif i == 1:
+                lane2 = count
+            elif i == 2:
+                lane3 = count
+            elif i == 3:
+                lane4 = count
+            else:
+                print('Warning in Lane Vehicle calculation!!!')
 
         # Convert the NumPy array to an image
         image = Image.fromarray(image_np)
@@ -122,7 +127,11 @@ def index(request):
 
         return render(request, 'index.html', {
             'form': form, 
-            'image': new_uploaded_image
+            'image': new_uploaded_image,
+            'lane1': lane1,
+            'lane2': lane2,
+            'lane3': lane3,
+            'lane4': lane4
         })
     else:
         form = UploadImageForm()
