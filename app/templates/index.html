@@ -96,24 +96,19 @@
                         Image Upload
                     </div>
                     <div class="card-body">
-                        <form action="" method="POST" enctype="multipart/form-data" id="imageUploadForm">{% csrf_token %}
-                            {{form.as_p}}
-                            <div class="form-group">
-                                <label for="image">Select an Image:</label>
-                                <input type="file" class="form-control-file" id="image" name="image" accept="image/*" required>
-                            </div>
-                            <!-- Display uploaded image here -->
-                            <div id="imagePreview" class="mt-3">
-                                <img src="" alt="Uploaded Image" id="previewImage" style="max-width: 100%;">
-                            </div>
-                            <div class="form-group">
-                                <button type="submit">Upload</button>
-                            </div>
+                        <form method="post" enctype="multipart/form-data">
+                          {% csrf_token %}
+                          {{ form.as_p }}
+                          <button type="submit">Upload</button>
                         </form>
-                        {% if img_obj %}  
-                            <h3>Succesfully uploaded : {{img_obj.caption}}</h3>  
-                            <img src="{{ img_obj.image.url}}" alt="connect" style="max-height:300px">  
-                        {% endif %} 
+                        <h3>Uploaded Images:</h3>
+                        <ul>
+                            {% for image in images %}
+                                <li><img src="{{ image.image.url }}" alt="Uploaded Image"></li>
+                            {% empty %}
+                                <li>No images uploaded yet.</li>
+                            {% endfor %}
+                        </ul>
                     </div>
                 </div>
             </div>
