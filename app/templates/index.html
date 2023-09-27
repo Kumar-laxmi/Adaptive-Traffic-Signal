@@ -102,13 +102,13 @@
                           <button type="submit">Upload</button>
                         </form>
                         <h3>Uploaded Images:</h3>
+                        {% if image.image %}
                         <ul>
-                            {% for image in images %}
-                                <li><img src="{{ image.image.url }}" alt="Uploaded Image"></li>
-                            {% empty %}
-                                <li>No images uploaded yet.</li>
-                            {% endfor %}
+                            <li><img src="{{ image.image.url }}" alt="Uploaded Image" style="max-width: 100%; max-height: 300px;"></li>
                         </ul>
+                        {% else %}
+                            <p>No image uploaded for this object.</p>
+                        {% endif %}
                     </div>
                 </div>
             </div>

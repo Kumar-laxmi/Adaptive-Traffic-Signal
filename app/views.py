@@ -1,13 +1,14 @@
 # Libraries related to Django
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
+from django.core.files.base import ContentFile
 from .models import UploadedImage
 from .forms import UploadImageForm
 
 
 # Libraries related to Image Processing
 from PIL import Image
-import io
+from io import BytesIO
 import base64
 
 # Libraries related to Computer Vision
@@ -68,8 +69,11 @@ def index(request):
         # Convert the NumPy array to an image
         image = Image.fromarray(image_np)
 
-        # Convert the image back the an object and save it to the Database
-        new_uploaded_image = UploadedImage.objects.create(fil = image)
+        new_uploaded_image = UploadedImage()
+        image_bytes = BytesIO()
+        image.save(image_bytes, format='JPEG')
+        image_file = ContentFile(image_bytes.getvalue(), name='new_image.jpg')
+        new_uploaded_image.image.save('new_image.jpg', image_file)
 
         return render(request, 'index.html', {
             'form': form, 
@@ -78,7 +82,10 @@ def index(request):
     else:
         form = UploadImageForm()
         images = UploadedImage.objects.all()
-        return render(request, 'index.html', {'form': form, 'images': images})
+        return render(request, 'index.html', {
+            'form': form, 
+            'images': images
+        })
 
 
 def index_temp(request):
