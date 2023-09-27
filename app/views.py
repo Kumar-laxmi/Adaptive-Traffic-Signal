@@ -29,13 +29,15 @@ def get_class_label_from_index(class_index):
 
 # Create your views here.
 def index(request):
+    UploadedImage.objects.all().delete()
     if request.method == 'POST':
         form = UploadImageForm(request.POST, request.FILES)
         if form.is_valid():
             form.save()
     
-        images = UploadedImage.objects.get(id=1)
-        image_np = np.array(images)
+        image_addr = 'media/' + UploadedImage.objects.values_list('image').latest('uploaded_at')[0]
+        image = Image.open(image_addr)
+        image_np = np.array(image)
 
         # Define colors for different classes
         class_colors = {
@@ -66,14 +68,12 @@ def index(request):
         # Convert the NumPy array to an image
         image = Image.fromarray(image_np)
 
-        # Convert the PIL Image to bytes
-        image_bytes = io.BytesIO()
-        image.save(image_bytes, format="PNG")
-        images = base64.b64encode(image_bytes.getvalue()).decode()
+        # Convert the image back the an object and save it to the Database
+        new_uploaded_image = UploadedImage.objects.create(fil = image)
 
         return render(request, 'index.html', {
             'form': form, 
-            'images': f"data:image/png;base64,{images}"
+            'image': new_uploaded_image
         })
     else:
         form = UploadImageForm()
