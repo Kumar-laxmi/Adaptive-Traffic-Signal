@@ -10,6 +10,8 @@ from .forms import UploadImageForm
 from PIL import Image
 from io import BytesIO
 import base64
+import plotly.express as px
+from plotly.offline import plot
 
 # Libraries related to Computer Vision
 import cv2
@@ -67,7 +69,11 @@ def index(request):
         model = YOLO('app/model/best.pt')
         detections = model(image)
 
-         # Iterate through each detection
+        # Initialize counters for each class and ROI
+        vehicle_counts = [[0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0]]
+
+
+        # Iterate through each detection
         for box in detections[0].boxes:
             class_index = int(box.cls.item())
             if class_index in [0, 1, 2, 3]:  # Vehicle class indices
@@ -77,7 +83,29 @@ def index(request):
                 bbox_center = ((bounding_box[0] + bounding_box[2]) / 2, (bounding_box[1] + bounding_box[3]) / 2)
                 for i, quad in enumerate(quads):
                     if cv2.pointPolygonTest(quad, bbox_center, False) == 1:
-                        vehicle_counts[i] += 1
+                        vehicle_counts[i][class_index] += 1
+        
+        # Array to store the total number of vehicles in each Region Of Interest
+        total_counts = [sum(roi_counts) for roi_counts in vehicle_counts]
+
+        # Plotly Heatmap definition
+        labels = {
+            'x': ['Bicycle', 'Car', 'Bus', 'Lorry'],
+            'y': ['Lane 1', 'Lane 2', 'Lane 3', 'Lane 4'],
+            'color': 'Counts'
+        }
+
+        fig = px.imshow(vehicle_counts,
+            labels=labels,
+            x=['Bicycle', 'Car', 'Bus', 'Lorry'],
+            y=['Lane 1', 'Lane 2', 'Lane 3', 'Lane 4']
+        )
+
+        # Update x-axes orientation
+        fig.update_xaxes(side="top")
+
+        # Save the figure into a variable
+        plot_vehicle = plot(fig, auto_open=False, output_type='div')
 
         # Draw regions of interest and lane names
         for i, quad in enumerate(quads):
@@ -104,7 +132,7 @@ def index(request):
 
         # Store Vehicle Count in the variables
         lane1 = lane2 = lane3 = lane4 = 0
-        for i, count in enumerate(vehicle_counts):
+        for i, count in enumerate(total_counts):
             if i == 0:
                 lane1 = count
             elif i == 1:
@@ -131,7 +159,8 @@ def index(request):
             'lane1': lane1,
             'lane2': lane2,
             'lane3': lane3,
-            'lane4': lane4
+            'lane4': lane4,
+            'plot_vehicle': plot_vehicle
         })
     else:
         form = UploadImageForm()

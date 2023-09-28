@@ -124,6 +124,19 @@
                         </div>
                     </div>
                 </div>
+                <div class="col-md-6">
+                    <div class="card" style="width: 100%;">
+                        <div class="card-body">
+                            <p class="card-text">
+                                {% block HeatPlot %}
+                                    {% autoescape off %}
+                                        {{ plot_vehicle }}
+                                    {% endautoescape %}
+                                {% endblock HeatPlot %}
+                            </p>
+                        </div>
+                    </div>
+                </div>
             </div>
             {% else %}
                 <!-- To be left blank to print Nothing -->
