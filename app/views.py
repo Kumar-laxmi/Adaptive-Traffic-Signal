@@ -88,24 +88,19 @@ def index(request):
         # Array to store the total number of vehicles in each Region Of Interest
         total_counts = [sum(roi_counts) for roi_counts in vehicle_counts]
 
-        # Plotly Heatmap definition
-        labels = {
-            'x': ['Bicycle', 'Car', 'Bus', 'Lorry'],
-            'y': ['Lane 1', 'Lane 2', 'Lane 3', 'Lane 4'],
-            'color': 'Counts'
-        }
 
-        fig = px.imshow(vehicle_counts,
-            labels=labels,
-            x=['Bicycle', 'Car', 'Bus', 'Lorry'],
-            y=['Lane 1', 'Lane 2', 'Lane 3', 'Lane 4']
+        # Flatten the data into a 1D array
+        data_flat = np.array(vehicle_counts).flatten()
+
+        # Create a histogram from the flattened data
+        histogram_fig = px.histogram(
+            data_flat,
+            nbins=20,  # You can adjust the number of bins as needed
+            labels=dict(x="Productivity"),
         )
 
-        # Update x-axes orientation
-        fig.update_xaxes(side="top")
-
         # Save the figure into a variable
-        plot_vehicle = plot(fig, auto_open=False, output_type='div')
+        plot_vehicle = plot(histogram_fig, auto_open=False, output_type='div')
 
         # Draw regions of interest and lane names
         for i, quad in enumerate(quads):
