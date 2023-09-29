@@ -16,6 +16,7 @@ from plotly.offline import plot
 # Libraries related to Computer Vision
 import cv2
 import numpy as np
+import pandas as pd
 import torch
 from ultralytics import YOLO
 
@@ -89,18 +90,31 @@ def index(request):
         total_counts = [sum(roi_counts) for roi_counts in vehicle_counts]
 
 
-        # Flatten the data into a 1D array
-        data_flat = np.array(vehicle_counts).flatten()
+        # Create a DataFrame from the data
+        df = pd.DataFrame(vehicle_counts, columns=['Bicycle', 'Car', 'Bus', 'Lorry'])
+        df['Lane'] = ['Lane 1', 'Lane 2', 'Lane 3', 'Lane 4']  # Three lanes, adjust this to match your data
 
-        # Create a histogram from the flattened data
-        histogram_fig = px.histogram(
-            data_flat,
-            nbins=20,  # You can adjust the number of bins as needed
-            labels=dict(x="Productivity"),
+        # Melt the DataFrame to reshape it for the grouped bar chart
+        df_melted = pd.melt(df, id_vars=['Lane'], value_vars=['Bicycle', 'Car', 'Bus', 'Lorry'], var_name='Vehicles', value_name='Count')
+
+        # Convert the 'Count' column to integers
+        df_melted['Count'] = df_melted['Count'].astype(int)
+
+        # Create the grouped bar chart using Plotly Express
+        fig = px.bar(
+            df_melted,
+            x='Lane',
+            y='Count',
+            color='Vehicles',
+            barmode='group',
+            labels={'Lane': 'Lanes', 'Count': 'Vehicle Count'},
         )
 
+        # Set the Y-axis to display only integers
+        fig.update_layout(yaxis_tickmode='linear', yaxis_dtick=1)
+
         # Save the figure into a variable
-        plot_vehicle = plot(histogram_fig, auto_open=False, output_type='div')
+        plot_vehicle = plot(fig, auto_open=False, output_type='div')
 
         # Draw regions of interest and lane names
         for i, quad in enumerate(quads):

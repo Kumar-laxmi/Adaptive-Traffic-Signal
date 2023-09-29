@@ -112,9 +112,9 @@
                 </div>
             </div>
             {% if image.image %}
-            <div class="row row-cols-1 row-cols-md-3 g-4">
-                <div class="col-6"></div>
-                    <div class="card" style="width: 50%;">
+            <div class="row g-4">
+                <div class="col-4">
+                    <div class="card">
                         <img class="card-img-top" src="{{ image.image.url }}" alt="Uploaded Image" style="max-width: 100%;">
                         <div class="card-body">
                             <p class="card-text">
@@ -128,7 +128,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-6">
+                <div class="col-8">
                     <div class="card">
                         <div class="card-body">
                             <p class="card-text">
