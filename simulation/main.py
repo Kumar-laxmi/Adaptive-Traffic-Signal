@@ -20,7 +20,7 @@ simTime = 100      # change this to change time of simulation
 timeElapsed = 0
 
 currentGreen = 0   # Indicates which signal is green
-nextGreen = (currentGreen+1)%noOfSignals
+nextGreen = (currentGreen + 1) % noOfSignals
 currentYellow = 0   # Indicates whether yellow signal is on or off 
 
 # Average times for vehicles to pass the intersection
@@ -274,6 +274,7 @@ def setTime():
                     noOfTrucks += 1
                 elif(vclass=='rickshaw'):
                     noOfRickshaws += 1
+
     greenTime = math.ceil(((noOfCars*carTime) + (noOfRickshaws*rickshawTime) + (noOfBuses*busTime) + (noOfTrucks*truckTime)+ (noOfBikes*bikeTime))/(noOfLanes+1)) 
     print('Green Time: ',greenTime)
     if(greenTime<defaultMinimum):
@@ -404,15 +405,15 @@ class Main:
     screenSize = (screenWidth, screenHeight)
 
     # Setting background image 
-    background = pygame.image.load('images/mod_int.png')
+    background = pygame.image.load('simulation/images/mod_int.png')
 
     screen = pygame.display.set_mode(screenSize)
     pygame.display.set_caption("SIMULATION")
 
     # Loading signal images and font
-    redSignal = pygame.image.load('images/signals/red.png')
-    yellowSignal = pygame.image.load('images/signals/yellow.png')
-    greenSignal = pygame.image.load('images/signals/green.png')
+    redSignal = pygame.image.load('simulation/images/signals/red.png')
+    yellowSignal = pygame.image.load('simulation/images/signals/yellow.png')
+    greenSignal = pygame.image.load('simulation/images/signals/green.png')
     font = pygame.font.Font(None, 30)
 
     thread3 = threading.Thread(name="generateVehicles",target=generateVehicles, args=())    # Generating vehicles

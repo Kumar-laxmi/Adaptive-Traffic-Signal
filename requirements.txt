@@ -1,5 +1,10 @@
+aioconsole==0.6.2
+aiohttp==3.8.5
+aiosignal==1.3.1
 antlr4-python3-runtime==4.9.3
 asgiref==3.7.2
+async-timeout==4.0.3
+attrs==23.1.0
 certifi==2023.7.22
 charset-normalizer==3.2.0
 contourpy==1.1.1
@@ -8,12 +13,15 @@ Django==4.2.5
 django-cleanup==8.0.0
 filelock==3.12.4
 fonttools==4.42.1
+frozenlist==1.4.0
 idna==3.4
+installer==0.7.0
 Jinja2==3.1.2
 kiwisolver==1.4.5
 MarkupSafe==2.1.3
 matplotlib==3.8.0
 mpmath==1.3.0
+multidict==6.0.4
 networkx==3.1
 numpy==1.26.0
 omegaconf==2.3.0
@@ -24,6 +32,8 @@ Pillow==10.0.1
 plotly==5.17.0
 psutil==5.9.5
 py-cpuinfo==9.0.0
+pygame==2.5.2
+pygbag==0.8.2
 pyparsing==3.1.1
 python-dateutil==2.8.2
 pytz==2023.3.post1
@@ -35,6 +45,7 @@ six==1.16.0
 sqlparse==0.4.4
 sympy==1.12
 tenacity==8.2.3
+token-utils==0.1.8
 torch==2.0.1
 torchvision==0.15.2
 tqdm==4.66.1
@@ -42,3 +53,4 @@ typing_extensions==4.8.0
 tzdata==2023.3
 ultralytics==8.0.188
 urllib3==2.0.5
+yarl==1.9.2
