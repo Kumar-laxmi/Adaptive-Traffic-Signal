@@ -226,31 +226,6 @@
   <div id="preloader"></div>
   <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
 
-    <script>
-        // JavaScript to display the uploaded image
-        const imageInput = document.getElementById("image");
-        const previewImage = document.getElementById("previewImage");
-        const imageUploadForm = document.getElementById("imageUploadForm");
-
-        imageInput.addEventListener("change", function () {
-            const file = this.files[0];
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = function (e) {
-                    previewImage.src = e.target.result;
-                };
-                reader.readAsDataURL(file);
-            } else {
-                previewImage.src = "";
-            }
-        });
-
-        // Prevent the form from submitting (for demonstration purposes)
-        imageUploadForm.addEventListener("submit", function (e) {
-            e.preventDefault();
-        });
-    </script>
-
   <!-- Vendor JS Files -->
   <script src="{% static 'vendor/aos/aos.js' %}"></script>
   <script src="{% static 'vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
