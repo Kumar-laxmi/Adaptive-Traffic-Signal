@@ -67,7 +67,7 @@ def index(request):
         vehicle_counts = [0] * len(quads)
 
         # Loading the custom model
-        model = YOLO('app/model/best.pt')
+        model = YOLO('app/model/train/weights/best.pt')
         detections = model(image)
 
         # Initialize counters for each class and ROI
@@ -153,6 +153,19 @@ def index(request):
             else:
                 print('Warning in Lane Vehicle calculation!!!')
 
+        max_count = max([lane1, lane2, lane3, lane4])
+        instruction1, instruction2, instruction3, instruction4 = 0, 0, 0, 0
+
+        # Set the instruction for the lane with the maximum count to 2, rest to 0
+        if lane1 == max_count:
+            instrunction1 = 2
+        elif lane2 == max_count:
+            instruction2 = 2
+        elif lane3 == max_count:
+            instruction3 = 2
+        else:
+            instruction4 = 2
+
         # Convert the NumPy array to an image
         image = Image.fromarray(image_np)
 
@@ -162,6 +175,8 @@ def index(request):
         image_file = ContentFile(image_bytes.getvalue(), name='new_image.jpg')
         new_uploaded_image.image.save('new_image.jpg', image_file)
 
+        lane_index = [1, 2, 3, 4]
+
         return render(request, 'index.html', {
             'form': form, 
             'image': new_uploaded_image,
@@ -169,7 +184,12 @@ def index(request):
             'lane2': lane2,
             'lane3': lane3,
             'lane4': lane4,
-            'plot_vehicle': plot_vehicle
+            'plot_vehicle': plot_vehicle,
+            'lane_index': lane_index,
+            'instruction1': instruction1,
+            'instruction2': instruction2,
+            'instruction3': instruction3,
+            'instruction4': instruction4
         })
     else:
         form = UploadImageForm()

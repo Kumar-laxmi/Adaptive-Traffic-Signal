@@ -143,6 +143,21 @@
                     </div>
                 </div>
             </div>
+            <div class="row g-2">
+                <!-- Traffic Lights will come here -->
+                <div class="d-flex flex-row">
+                    {% for count in lane_index %}
+                    <div class="p-2">
+                        <div class="traffic-light">
+                            <div class="light red"></div>
+                            <div class="light yellow"></div>
+                            <div class="light green"></div>
+                            <p class="instructions">Lane {{ count }}</p>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
             {% else %}
                 <!-- To be left blank to print Nothing -->
             {% endif %}
@@ -228,7 +243,47 @@
   <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
 
   <!-- Custom JS Definition -->
+  <script>
+      class TrafficLight {
+          constructor(selector) {
+              this.red = document.querySelector(`${selector} .red`);
+              this.yellow = document.querySelector(`${selector} .yellow`);
+              this.green = document.querySelector(`${selector} .green`);
+          }
 
+          changeColor(color) {
+              this.red.style.backgroundColor = 'transparent';
+              this.yellow.style.backgroundColor = 'transparent';
+              this.green.style.backgroundColor = 'transparent';
+
+              if (color == 0) {
+                  this.red.style.backgroundColor = '#ff3b30';
+              } else if (color == 1) {
+                  this.yellow.style.backgroundColor = '#ffcc00';
+              } else if (color == 2) {
+                  this.green.style.backgroundColor = '#4cd964';
+              }
+          }
+      }
+
+      // Create traffic light objects
+      const trafficLight1 = new TrafficLight('.traffic-light:nth-child(1)');
+      const trafficLight2 = new TrafficLight('.traffic-light:nth-child(2)');
+      const trafficLight3 = new TrafficLight('.traffic-light:nth-child(3)');
+      const trafficLight4 = new TrafficLight('.traffic-light:nth-child(4)');
+
+      // Storing the instruction in the variables
+      var instruction1 = "{{ instruction1 }}";
+      var instruction2 = "{{ instruction2 }}";
+      var instruction3 = "{{ instruction3 }}";
+      var instruction4 = "{{ instruction4 }}";
+
+      // Change the color of the traffic lights on page load
+      trafficLight1.changeColor(instruction1);
+      trafficLight2.changeColor(instruction2);
+      trafficLight3.changeColor(instruction3);
+      trafficLight4.changeColor(instruction4);
+  </script>
 
   <!-- Vendor JS Files -->
   <script src="{% static 'vendor/aos/aos.js' %}"></script>
