@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>4 Traffic Lights</title>
+<style>
+.traffic-light-container {
+  display: flex;
+  justify-content: space-between;
+}
+
+.traffic-light {
+  width: 100px;
+  height: 320px;
+  background-color: #444;
+  border: 10px solid #333;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  margin: 0 5px; /* Reduced margin between traffic lights */
+}
+
+.light {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  margin: 10px 0;
+  border: 5px solid #333; /* Circle outline */
+}
+
+.red {
+  background-color: #ff3b30;
+}
+
+.yellow {
+  background-color: #ffcc00;
+}
+
+.green {
+  background-color: #4cd964;
+}
+
+.instructions {
+  text-align: center;
+  margin-top: 10px;
+  font-weight: bold;
+  font-size: 14px;
+  color: white;
+}
+</style>
+</head>
+<body>
+<div class="traffic-light-container">
+  <div class="traffic-light">
+    <div class="light red"></div>
+    <div class="light yellow"></div>
+    <div class="light green"></div>
+    <p class="instructions">Instruction 1</p>
+  </div>
+
+  <div class="traffic-light">
+    <div class="light red"></div>
+    <div class="light yellow"></div>
+    <div class="light green"></div>
+    <p class="instructions">Instruction 2</p>
+  </div>
+
+  <div class="traffic-light">
+    <div class="light red"></div>
+    <div class="light yellow"></div>
+    <div class="light green"></div>
+    <p class="instructions">Instruction 3</p>
+  </div>
+
+  <div class="traffic-light">
+    <div class="light red"></div>
+    <div class="light yellow"></div>
+    <div class="light green"></div>
+    <p class="instructions">Instruction 4</p>
+  </div>
+</div>
+
+<script>
+class TrafficLight {
+  constructor(selector) {
+    this.red = document.querySelector(`${selector} .red`);
+    this.yellow = document.querySelector(`${selector} .yellow`);
+    this.green = document.querySelector(`${selector} .green`);
+  }
+
+  changeColor(color) {
+    this.red.style.backgroundColor = 'transparent';
+    this.yellow.style.backgroundColor = 'transparent';
+    this.green.style.backgroundColor = 'transparent';
+
+    if (color == 0) {
+      this.red.style.backgroundColor = '#ff3b30';
+    } else if (color == 1) {
+      this.yellow.style.backgroundColor = '#ffcc00';
+    } else if (color == 2) {
+      this.green.style.backgroundColor = '#4cd964';
+    }
+  }
+}
+
+// Create traffic light objects
+const trafficLight1 = new TrafficLight('.traffic-light:nth-child(1)');
+const trafficLight2 = new TrafficLight('.traffic-light:nth-child(2)');
+const trafficLight3 = new TrafficLight('.traffic-light:nth-child(3)');
+const trafficLight4 = new TrafficLight('.traffic-light:nth-child(4)');
+
+// Change the color of the traffic lights on page load
+trafficLight1.changeColor(0);
+trafficLight2.changeColor(1);
+trafficLight3.changeColor(2);
+trafficLight4.changeColor(0);
+</script>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

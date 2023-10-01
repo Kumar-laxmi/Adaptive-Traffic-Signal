@@ -1,0 +1,45 @@
+.traffic-light-container {
+  display: flex;
+  justify-content: space-between;
+}
+
+.traffic-light {
+  width: 100px;
+  height: 320px;
+  background-color: #444;
+  border: 10px solid #333;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  margin: 0 5px; /* Reduced margin between traffic lights */
+}
+
+.light {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  margin: 10px 0;
+  border: 5px solid #333; /* Circle outline */
+}
+
+.red {
+  background-color: #ff3b30;
+}
+
+.yellow {
+  background-color: #ffcc00;
+}
+
+.green {
+  background-color: #4cd964;
+}
+
+.instructions {
+  text-align: center;
+  margin-top: 10px;
+  font-weight: bold;
+  font-size: 14px;
+  color: white;
+}
