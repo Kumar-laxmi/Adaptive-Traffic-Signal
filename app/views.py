@@ -202,3 +202,6 @@ def index(request):
 
 def index_temp(request):
     return render(request, 'index_temp.html', {})
+
+def testing(request):
+    return render(request, 'test.html', {})
