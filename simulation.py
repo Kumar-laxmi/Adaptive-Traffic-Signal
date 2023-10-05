@@ -1,11 +1,31 @@
+# LAG
+# NO. OF VEHICLES IN SIGNAL CLASS
+# stops not used
+# DISTRIBUTION
+# BUS TOUCHING ON TURNS
+# Distribution using python class
+
+# *** IMAGE XY COOD IS TOP LEFT
 import random
 import math
 import time
 import threading
+# from vehicle_detection import detection
 import pygame
 import sys
 import os
 
+# options={
+#    'model':'./cfg/yolo.cfg',     #specifying the path of model
+#    'load':'./bin/yolov2.weights',   #weights
+#    'threshold':0.3     #minimum confidence factor to create a box, greater than 0.3 good
+# }
+
+# tfnet=TFNet(options)    #READ ABOUT TFNET
+
+############################################################################################################################
+############################################# SIMULATION CONFIGURATION #####################################################
+############################################################################################################################
 
 # Default values of signal times
 defaultRed = 150
@@ -16,11 +36,11 @@ defaultMaximum = 60
 
 signals = []
 noOfSignals = 4
-simTime = 100      # change this to change time of simulation
+simTime = 300       # change this to change time of simulation
 timeElapsed = 0
 
 currentGreen = 0   # Indicates which signal is green
-nextGreen = (currentGreen + 1) % noOfSignals
+nextGreen = (currentGreen+1)%noOfSignals
 currentYellow = 0   # Indicates whether yellow signal is on or off 
 
 # Average times for vehicles to pass the intersection
@@ -71,6 +91,8 @@ gap2 = 15   # moving gap
 
 pygame.init()
 simulation = pygame.sprite.Group()
+
+############################################################################################################################
 
 class TrafficSignal:
     def __init__(self, red, yellow, green, minimum, maximum):
@@ -159,6 +181,10 @@ class Vehicle(pygame.sprite.Sprite):
                         self.y += 1.8
                         if(self.rotateAngle==90):
                             self.turned = 1
+                            # path = "images/" + directionNumbers[((self.direction_number+1)%noOfSignals)] + "/" + self.vehicleClass + ".png"
+                            # self.x = mid[self.direction]['x']
+                            # self.y = mid[self.direction]['y']
+                            # self.image = pygame.image.load(path)
                     else:
                         if(self.index==0 or self.y+self.currentImage.get_rect().height<(vehicles[self.direction][self.lane][self.index-1].y - gap2) or self.x+self.currentImage.get_rect().width<(vehicles[self.direction][self.lane][self.index-1].x - gap2)):
                             self.y += self.speed
@@ -208,13 +234,19 @@ class Vehicle(pygame.sprite.Sprite):
                         self.y -= 2.5
                         if(self.rotateAngle==90):
                             self.turned = 1
+                            # path = "images/" + directionNumbers[((self.direction_number+1)%noOfSignals)] + "/" + self.vehicleClass + ".png"
+                            # self.x = mid[self.direction]['x']
+                            # self.y = mid[self.direction]['y']
+                            # self.currentImage = pygame.image.load(path)
                     else:
                         if(self.index==0 or self.y>(vehicles[self.direction][self.lane][self.index-1].y + vehicles[self.direction][self.lane][self.index-1].currentImage.get_rect().height +  gap2) or self.x>(vehicles[self.direction][self.lane][self.index-1].x + gap2)):
                             self.y -= self.speed
             else: 
                 if((self.x>=self.stop or self.crossed == 1 or (currentGreen==2 and currentYellow==0)) and (self.index==0 or self.x>(vehicles[self.direction][self.lane][self.index-1].x + vehicles[self.direction][self.lane][self.index-1].currentImage.get_rect().width + gap2) or (vehicles[self.direction][self.lane][self.index-1].turned==1))):                
                 # (if the image has not reached its stop coordinate or has crossed stop line or has green signal) and (it is either the first vehicle in that lane or it is has enough gap to the next vehicle in that lane)
-                    self.x -= self.speed  # move the vehicle  
+                    self.x -= self.speed  # move the vehicle    
+            # if((self.x>=self.stop or self.crossed == 1 or (currentGreen==2 and currentYellow==0)) and (self.index==0 or self.x>(vehicles[self.direction][self.lane][self.index-1].x + vehicles[self.direction][self.lane][self.index-1].currentImage.get_rect().width + gap2))):                
+            #     self.x -= self.speed
         elif(self.direction=='up'):
             if(self.crossed==0 and self.y<stopLines[self.direction]):
                 self.crossed = 1
@@ -254,18 +286,29 @@ def initialize():
 def setTime():
     global noOfCars, noOfBikes, noOfBuses, noOfTrucks, noOfRickshaws, noOfLanes
     global carTime, busTime, truckTime, rickshawTime, bikeTime
-    os.system("say detecting vehicles, "+directionNumbers[(currentGreen+1)%noOfSignals])
+    os.system("say detecting vehicles, "+directionNumbers[(currentGreen+1) % noOfSignals])
+#    detection_result=detection(currentGreen,tfnet)
+#    greenTime = math.ceil(((noOfCars*carTime) + (noOfRickshaws*rickshawTime) + (noOfBuses*busTime) + (noOfBikes*bikeTime))/(noOfLanes+1))
+#    if(greenTime<defaultMinimum):
+#       greenTime = defaultMinimum
+#    elif(greenTime>defaultMaximum):
+#       greenTime = defaultMaximum
+    # greenTime = len(vehicles[currentGreen][0])+len(vehicles[currentGreen][1])+len(vehicles[currentGreen][2])
+    # noOfVehicles = len(vehicles[directionNumbers[nextGreen]][1])+len(vehicles[directionNumbers[nextGreen]][2])-vehicles[directionNumbers[nextGreen]]['crossed']
+    # print("no. of vehicles = ",noOfVehicles)
     noOfCars, noOfBuses, noOfTrucks, noOfRickshaws, noOfBikes = 0,0,0,0,0
     for j in range(len(vehicles[directionNumbers[nextGreen]][0])):
         vehicle = vehicles[directionNumbers[nextGreen]][0][j]
         if(vehicle.crossed==0):
             vclass = vehicle.vehicleClass
+            # print(vclass)
             noOfBikes += 1
     for i in range(1,3):
         for j in range(len(vehicles[directionNumbers[nextGreen]][i])):
             vehicle = vehicles[directionNumbers[nextGreen]][i][j]
             if(vehicle.crossed==0):
                 vclass = vehicle.vehicleClass
+                # print(vclass)
                 if(vclass=='car'):
                     noOfCars += 1
                 elif(vclass=='bus'):
@@ -274,13 +317,15 @@ def setTime():
                     noOfTrucks += 1
                 elif(vclass=='rickshaw'):
                     noOfRickshaws += 1
-
-    greenTime = math.ceil(((noOfCars*carTime) + (noOfRickshaws*rickshawTime) + (noOfBuses*busTime) + (noOfTrucks*truckTime)+ (noOfBikes*bikeTime))/(noOfLanes+1)) 
+    # print(noOfCars)
+    greenTime = math.ceil(((noOfCars*carTime) + (noOfRickshaws*rickshawTime) + (noOfBuses*busTime) + (noOfTrucks*truckTime)+ (noOfBikes*bikeTime))/(noOfLanes+1))
+    # greenTime = math.ceil((noOfVehicles)/noOfLanes) 
     print('Green Time: ',greenTime)
-    if(greenTime<defaultMinimum):
+    if(greenTime < defaultMinimum):
         greenTime = defaultMinimum
-    elif(greenTime>defaultMaximum):
+    elif(greenTime > defaultMaximum):
         greenTime = defaultMaximum
+    # greenTime = random.randint(15,50)
     signals[(currentGreen+1)%(noOfSignals)].green = greenTime
    
 def repeat():
@@ -292,6 +337,7 @@ def repeat():
             thread = threading.Thread(name="detection",target=setTime, args=())
             thread.daemon = True
             thread.start()
+            # setTime()
         time.sleep(1)
     currentYellow = 1   # set yellow signal on
     vehicleCountTexts[currentGreen] = "0"
@@ -400,20 +446,20 @@ class Main:
     white = (255, 255, 255)
 
     # Screensize 
-    screenWidth = 1300
-    screenHeight = 680
+    screenWidth = 1400
+    screenHeight = 800
     screenSize = (screenWidth, screenHeight)
 
-    # Setting background image 
-    background = pygame.image.load('simulation/images/mod_int.png')
+    # Setting background image i.e. image of intersection
+    background = pygame.image.load('images/mod_int.png')
 
     screen = pygame.display.set_mode(screenSize)
     pygame.display.set_caption("SIMULATION")
 
     # Loading signal images and font
-    redSignal = pygame.image.load('simulation/images/signals/red.png')
-    yellowSignal = pygame.image.load('simulation/images/signals/yellow.png')
-    greenSignal = pygame.image.load('simulation/images/signals/green.png')
+    redSignal = pygame.image.load('images/signals/red.png')
+    yellowSignal = pygame.image.load('images/signals/yellow.png')
+    greenSignal = pygame.image.load('images/signals/green.png')
     font = pygame.font.Font(None, 30)
 
     thread3 = threading.Thread(name="generateVehicles",target=generateVehicles, args=())    # Generating vehicles

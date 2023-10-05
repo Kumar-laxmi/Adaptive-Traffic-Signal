@@ -1,1 +1,0 @@
-# Simulation of Adaptive Traffic Signal Management
