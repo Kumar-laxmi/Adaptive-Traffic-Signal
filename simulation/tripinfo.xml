@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- generated on 2023-11-26 09:42:00 by Eclipse SUMO GUI Version 1.19.0
+<configuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://sumo.dlr.de/xsd/sumoConfiguration.xsd">
+
+    <input>
+        <net-file value="data/intersection1.net.xml"/>
+        <route-files value="data/intersection1.rou.xml"/>
+        <additional-files value="data/intersection1.det.xml"/>
+    </input>
+
+    <output>
+        <tripinfo-output value="tripinfo.xml"/>
+    </output>
+
+    <time>
+        <begin value="0"/>
+        <end value="15000"/>
+        <step-length value="0.01"/>
+    </time>
+
+    <traci_server>
+        <remote-port value="53985"/>
+    </traci_server>
+
+    <gui_only>
+        <gui-settings-file value="data/intersection1.gui.xml"/>
+        <start value="true"/>
+    </gui_only>
+
+</configuration>
+-->
+
+<tripinfos xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://sumo.dlr.de/xsd/tripinfo_file.xsd">
+    <tripinfo id="veh_right_2.0" depart="7.81" departLane="r2c_0" departPos="5.10" departSpeed="0.00" departDelay="3.78" arrival="29.40" arrivalLane="c2l_1" arrivalPos="86.40" arrivalSpeed="14.26" duration="21.59" routeLength="194.90" waitingTime="0.00" waitingCount="0" stopTime="0.00" timeLoss="7.92" rerouteNo="0" devices="tripinfo_veh_right_2.0" vType="car" speedFactor="1.03" vaporized=""/>
+</tripinfos>

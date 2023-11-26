@@ -1,0 +1,12 @@
+<configuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://sumo.dlr.de/xsd/netconvertConfiguration.xsd">
+
+    <input>
+        <node-files value="intersection1.nod.xml"/>
+        <edge-files value="intersection1.edg.xml"/>
+    </input>
+
+    <output>
+        <output-file value="intersection1.net.xml"/>
+    </output>
+
+</configuration>

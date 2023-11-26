@@ -1,0 +1,19 @@
+<configuration>
+    <input>
+        <net-file value="intersection1.net.xml" />
+        <route-files value="intersection1.rou.xml" />
+        <additional-files value="intersection1.det.xml" />
+    </input>
+
+    <time>
+        <begin value="0" />
+        <end value="15000" />
+        <step-length value="0.01" />
+    </time>
+
+    <gui_only>
+        <start value="true"/>
+        <gui-settings-file value="intersection1.gui.xml"/>
+    </gui_only>
+
+</configuration>

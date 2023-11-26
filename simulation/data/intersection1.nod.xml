@@ -1,0 +1,7 @@
+<nodes>
+    <node id="top" x="0.0" y="100.0" type="priority" />
+    <node id="down" x="0.0" y="-100.0" type="priority" />
+    <node id="left" x="-100.0" y="0.0" type="priority" />
+    <node id="right" x="100.0" y="0.0" type="priority" />
+    <node id="center" x="0.0" y="0.0" type="traffic_light" />
+</nodes>
