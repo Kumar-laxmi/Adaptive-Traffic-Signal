@@ -36,6 +36,12 @@ else:
 from sumolib import checkBinary  # noqa
 import traci  # noqa
 
+def numberv(lane):
+    nb = 0
+    for _ in traci.lane.getLastStepVehicleIDs(lane):
+        nb += 1
+    return nb
+
 """
 def run():
     step = 0
@@ -57,12 +63,22 @@ def run():
 """
 def run():
     step = 0
-    timer = 1000                                           #10 seconds timer
-    traci.trafficlight.setPhase("center", 0)
+    timer1 = 10000  # 10 seconds timer for even phases
+    traci.trafficlight.setPhase("center", 7)
+
     while traci.simulation.getMinExpectedNumber() > 0:
         traci.simulationStep()
-        phase = (step // timer) % 8
-        traci.trafficlight.setPhase("center", phase)
+        phase = (step // timer1) % 4
+
+        if phase == 0:
+            traci.trafficlight.setPhase("center", 0)
+        elif phase == 1:
+            traci.trafficlight.setPhase("center", 2)
+        elif phase == 2:
+            traci.trafficlight.setPhase("center", 4)
+        elif phase == 3:
+            traci.trafficlight.setPhase("center", 6)
+
         step += 1
 
     traci.close()
