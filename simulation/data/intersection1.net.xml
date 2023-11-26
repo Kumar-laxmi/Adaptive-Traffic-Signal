@@ -155,13 +155,9 @@
 
     <tlLogic id="center" type="static" programID="0" offset="0">
         <phase duration="42" state="GGGGGGrrrrrrrrrrrrrrrrrr"/>   <!-- Phase = 0 -->
-        <phase duration="3"  state="yyyyyyrrrrrrrrrrrrrrrrrr"/>   <!-- Phase = 1 -->
-        <phase duration="42" state="rrrrrrGGGGGGrrrrrrrrrrrr"/>   <!-- Phase = 2 -->
-        <phase duration="3"  state="rrrrrryyyyyyrrrrrrrrrrrr"/>   <!-- Phase = 3 -->
-        <phase duration="42" state="rrrrrrrrrrrrGGGGGGrrrrrr"/>   <!-- Phase = 4 -->
-        <phase duration="3"  state="rrrrrrrrrrrryyyyyyrrrrrr"/>   <!-- Phase = 5 -->
-        <phase duration="42" state="rrrrrrrrrrrrrrrrrrGGGGGG"/>   <!-- Phase = 6 -->
-        <phase duration="3"  state="rrrrrrrrrrrrrrrrrryyyyyy"/>   <!-- Phase = 7 -->
+        <phase duration="42" state="rrrrrrGGGGGGrrrrrrrrrrrr"/>   <!-- Phase = 1 -->
+        <phase duration="42" state="rrrrrrrrrrrrGGGGGGrrrrrr"/>   <!-- Phase = 2 -->
+        <phase duration="42" state="rrrrrrrrrrrrrrrrrrGGGGGG"/>   <!-- Phase = 3 -->
     </tlLogic>
 
     <junction id="center" type="traffic_light" x="100.00" y="100.00" incLanes="t2c_0 t2c_1 t2c_2 r2c_0 r2c_1 r2c_2 d2c_0 d2c_1 d2c_2 l2c_0 l2c_1 l2c_2" intLanes=":center_0_0 :center_1_0 :center_1_1 :center_1_2 :center_24_0 :center_25_0 :center_6_0 :center_7_0 :center_7_1 :center_7_2 :center_26_0 :center_27_0 :center_12_0 :center_13_0 :center_13_1 :center_13_2 :center_28_0 :center_29_0 :center_18_0 :center_19_0 :center_19_1 :center_19_2 :center_30_0 :center_31_0" shape="90.40,113.60 109.60,113.60 110.04,111.38 110.60,110.60 111.38,110.04 112.38,109.71 113.60,109.60 113.60,90.40 111.38,89.96 110.60,89.40 110.04,88.62 109.71,87.62 109.60,86.40 90.40,86.40 89.96,88.62 89.40,89.40 88.62,89.96 87.62,90.29 86.40,90.40 86.40,109.60 88.62,110.04 89.40,110.60 89.96,111.38 90.29,112.38">

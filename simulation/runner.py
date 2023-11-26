@@ -63,21 +63,14 @@ def run():
 """
 def run():
     step = 0
-    timer1 = 10000  # 10 seconds timer for even phases
-    traci.trafficlight.setPhase("center", 7)
+    timer1 = 1000  # 10 seconds timer for even phases
+    traci.trafficlight.setPhase("center", 0)
 
     while traci.simulation.getMinExpectedNumber() > 0:
         traci.simulationStep()
         phase = (step // timer1) % 4
-
-        if phase == 0:
-            traci.trafficlight.setPhase("center", 0)
-        elif phase == 1:
-            traci.trafficlight.setPhase("center", 2)
-        elif phase == 2:
-            traci.trafficlight.setPhase("center", 4)
-        elif phase == 3:
-            traci.trafficlight.setPhase("center", 6)
+        print("Now the phase is: {} & step: {}".format(phase, step))
+        traci.trafficlight.setPhase("center", phase)
 
         step += 1
 
