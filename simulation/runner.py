@@ -42,35 +42,39 @@ def numberv(lane):
         nb += 1
     return nb
 
-"""
+def getLaneVehicleCount(lane):
+    vehicles = list(s[:-4] for s in traci.lane.getLastStepVehicleIDs(lane))
+    return list(vehicles.count("car_top"), vehicles.count("bicycle_top"), vehicles.count("truck_top"), vehicles.count("bus_top"))
+
+def getSignalDuration(road):
+    vehicle_count_list_0 = getLaneVehicleCount(road + "_0")
+    vehicle_count_list_1 = getLaneVehicleCount(road + "_1")
+    vehicle_count_list_2 = getLaneVehicleCount(road + "_2")
+    vehicle_count_list = [sum(x) for x in zip(vehicle_count_list_0, vehicle_count_list_1, vehicle_count_list_2)]
+    cars = vehicle_count_list[0]
+    bicycle = vehicle_count_list[1]
+    truck = vehicle_count_list[2]
+    bus = vehicle_count_list[3]
+    gst = ((cars * 6.325) + (bicycle * 5.774) + (truck * 5.547) + (bus * 5.774))/3
+    return (gst * 100)
+
 def run():
     step = 0
-    # we start with phase 2 where EW has green
-    traci.trafficlight.setPhase("center", 2)
-    while traci.simulation.getMinExpectedNumber() > 0:
-        traci.simulationStep()
-        if traci.trafficlight.getPhase("center") == 2:
-            # we are not already switching
-            if traci.inductionloop.getLastStepVehicleNumber("0") > 0:
-                # there is a vehicle from the north, switch
-                traci.trafficlight.setPhase("center", 3)
-            else:
-                # otherwise try to keep green for EW
-                traci.trafficlight.setPhase("center", 2)
-        step += 1
-    traci.close()
-    sys.stdout.flush()
-"""
-def run():
-    step = 0
-    timer1 = 1000  # 10 seconds timer for even phases
-    traci.trafficlight.setPhase("center", 0)
+    next_timer = 1000                                # 10 seconds timer for even phases
+    phase = 0
+    traci.trafficlight.setPhase("center", phase)
+    roads = ["t2c", "r2c", "d2c", "l2c"]
 
     while traci.simulation.getMinExpectedNumber() > 0:
         traci.simulationStep()
-        phase = (step // timer1) % 4
-        print("Now the phase is: {} & step: {}".format(phase, step))
-        traci.trafficlight.setPhase("center", phase)
+        next_phase = (phase + 1) % 4
+        count = next_timer
+        next_timer = getSignalDuration(next_phase)
+        print("Current Phase: {}, Duration: {}".format(phase, count//100))
+        while count > 0:
+            traci.trafficlight.setPhase("center", phase)
+            count -= 1
+        phase = next_phase
 
         step += 1
 

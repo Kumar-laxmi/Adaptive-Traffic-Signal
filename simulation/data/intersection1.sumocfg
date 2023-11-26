@@ -2,7 +2,7 @@
     <input>
         <net-file value="intersection1.net.xml" />
         <route-files value="intersection1.rou.xml" />
-        <additional-files value="intersection1.det.xml" />
+
     </input>
 
     <time>
