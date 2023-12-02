@@ -25,6 +25,7 @@ urlpatterns = [
     path('temp/', index_temp),
     path('test/', testing),
     path('', index),
+    path('model_info', model_info)
 ]
 if settings.DEBUG:  
     urlpatterns += static(settings.MEDIA_URL,document_root=settings.MEDIA_ROOT) 

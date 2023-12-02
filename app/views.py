@@ -199,6 +199,8 @@ def index(request):
             'images': images
         })
 
+def model_info(request):
+    return render(request, 'model_info.html', {})
 
 def index_temp(request):
     return render(request, 'index_temp.html', {})
