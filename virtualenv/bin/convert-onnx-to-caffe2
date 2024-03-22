@@ -1,4 +1,4 @@
-#!/Users/kumarlaxmikant/Desktop/Visual_Studio/Adaptive-Traffic-Signal/virtualenv/bin/python3.11
+#!/Users/kumarlaxmikant/Desktop/Visual_Studio/Adaptive-Traffic-Signal/virtualenv/bin/python3
 # -*- coding: utf-8 -*-
 import re
 import sys
